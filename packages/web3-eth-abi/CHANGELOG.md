@@ -170,4 +170,16 @@ Documentation:
 
 -   Dependencies updated
 
+## [4.2.2]
+
+### Changed
+
+-   Dependencies updated
+
+## [4.2.3]
+
+### Fixed
+
+-   fix encodedata in EIP-712 (#7095)
+
 ## [Unreleased]

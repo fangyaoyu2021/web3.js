@@ -2444,7 +2444,7 @@ If there are any bugs, improvements, optimizations or any new feature proposal f
 -   Added `signature` to type `AbiFunctionFragment` (#6922)
 -   update type `Withdrawals`, `block` and `BlockHeaderOutput` to include properties of eip 4844, 4895, 4788 (#6933)
 
-## [Unreleased]
+## [4.9.0]
 
 ### Added
 
@@ -2455,6 +2455,10 @@ If there are any bugs, improvements, optimizations or any new feature proposal f
 #### web3-core
 
 -   `defaultReturnFormat` was added to the configuration options. (#6947)
+
+#### web3-errors
+
+- Added `InvalidIntegerError` error for fromWei and toWei (#7052)
 
 #### web3-eth
 
@@ -2480,14 +2484,28 @@ If there are any bugs, improvements, optimizations or any new feature proposal f
 
 #### web3-utils
 
+- `toWei` add warning when using large numbers or large decimals that may cause precision loss (#6908)
+- `toWei` and `fromWei` now supports integers as a unit. (#7053)  
 
 ### Fixed
 
+#### web3-eth
+
+-   Fixed issue with simple transactions, Within `checkRevertBeforeSending` if there is no data set in transaction, set gas to be `21000` (#7043)
+
 #### web3-utils
 
+- `toWei` support numbers in scientific notation (#6908)
+- `toWei` and `fromWei` trims according to ether unit successfuly (#7044)
 
 #### web3-validator
 
+- The JSON schema conversion process now correctly assigns an id when the `abi.name` is not available, for example, in the case of public mappings. (#6981)
+-  `browser` entry point that was pointing to an non-existing bundle file was removed from `package.json` (#7015)
+
+#### web3-core
+
+-   Set a try catch block if processesingError fails (#7022)
 
 ### Changed
 
@@ -2498,7 +2516,119 @@ If there are any bugs, improvements, optimizations or any new feature proposal f
 #### web3-eth
 
 -   Added parameter `customTransactionReceiptSchema` into methods `emitConfirmation`, `waitForTransactionReceipt`, `watchTransactionByPolling`, `watchTransactionBySubscription`, `watchTransactionForConfirmations` (#7000)
+-   Changed functionality: For networks that returns `baseFeePerGas===0x0` fill `maxPriorityFeePerGas` and `maxFeePerGas` by `getGasPrice` method (#7050)
+
+#### web3-eth-abi
+
+-   Dependencies updated
 
 #### web3-rpc-methods
 
 -   Change `estimateGas` method to add possibility pass Transaction type (#7000)
+
+## [4.10.0]
+
+### Added
+
+#### web3
+
+-   Now when existing packages are added in web3, will be avalible for plugins via context. (#7088)
+
+#### web3-core
+
+-   Now when existing packages are added in web3, will be avalible for plugins via context. (#7088)
+
+#### web3-eth
+
+-   `sendTransaction` in `rpc_method_wrappers` accepts optional param of `TransactionMiddleware` (#7088)
+-   WebEth has `setTransactionMiddleware` and `getTransactionMiddleware` for automatically passing to `sentTransaction` (#7088)
+
+#### web3-eth-ens
+
+-   `getText` now supports first param Address
+-   `getName` has optional second param checkInterfaceSupport
+
+### web3-types
+
+-   Added `result` as optional `never` and `error` as optional `never in type `JsonRpcNotification` (#7091)
+-   Added `JsonRpcNotfication` as a union type in `JsonRpcResponse` (#7091)
+
+### web3-rpc-providers
+
+-   RC release
+
+### Fixed
+
+#### web3-eth-ens
+
+-   `getName` reverse resolution
+
+## [Unreleased]
+
+### Fixed
+
+#### web3-eth
+
+-   Fixed geth issue when running a new instance, transactions will index when there are no blocks created (#7098)
+
+### Added
+
+#### web3
+
+-   `web3.eth.Contract` will get transaction middleware and use it, if `web3.eth` has transaction middleware. (#7138)
+
+#### web3-eth-contract
+
+-   `populateTransaction` was added to contract methods (#7124)
+-   Contract has `setTransactionMiddleware` and `getTransactionMiddleware` for automatically passing to `sentTransaction` for `deploy` and `send` functions (#7138)
+
+## [4.11.0]
+
+### Fixed
+
+#### web3-eth-abi
+
+-   fix encodedata in EIP-712 (#7095)
+
+#### web3-utils
+
+-   `_sendPendingRequests` will catch unhandled errors from `_sendToSocket` (#6968)
+
+#### web3-eth
+
+-   Fixed geth issue when running a new instance, transactions will index when there are no blocks created (#7098)
+
+### Changed
+
+#### web3-eth-accounts
+
+- baseTransaction method updated (#7095)
+
+#### web3-providers-ws
+
+-   Update dependancies (#7109)
+
+#### web3-plugin-example
+
+-   Dependencies updated
+
+#### web3-rpc-providers
+
+ - Change request return type `Promise<ResultType>` to `Promise<JsonRpcResponseWithResult<ResultType>>` (#7102)
+
+### Added
+
+#### web3-eth-contract
+
+-   `populateTransaction` was added to contract methods (#7124)
+-   Contract has `setTransactionMiddleware` and `getTransactionMiddleware` for automatically passing to `sentTransaction` for `deploy` and `send` functions (#7138)
+
+#### web3-rpc-providers
+
+ - When error is returned with code 429, throw rate limit error (#7102)
+
+#### web3
+
+-   `web3.eth.Contract` will get transaction middleware and use it, if `web3.eth` has transaction middleware. (#7138)
+
+## [Unreleased]

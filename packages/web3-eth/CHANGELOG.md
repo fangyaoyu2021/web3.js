@@ -232,7 +232,7 @@ Documentation:
 -   method `getBlock` now includes properties of eip 4844, 4895, 4788 when returning block (#6933)
 -   update type `withdrawalsSchema`, `blockSchema` and `blockHeaderSchema` schemas to include properties of eip 4844, 4895, 4788 (#6933)
 
-## [Unreleased]
+## [4.7.0]
 
 ### Added
 
@@ -242,3 +242,28 @@ Documentation:
 ### Changed
 
 -   Added parameter `customTransactionReceiptSchema` into methods `emitConfirmation`, `waitForTransactionReceipt`, `watchTransactionByPolling`, `watchTransactionBySubscription`, `watchTransactionForConfirmations` (#7000)
+-   Changed functionality: For networks that returns `baseFeePerGas===0x0` fill `maxPriorityFeePerGas` and `maxFeePerGas` by `getGasPrice` method (#7050)
+
+### Fixed
+
+-   Fixed issue with simple transactions, Within `checkRevertBeforeSending` if there is no data set in transaction, set gas to be `21000` (#7043)
+
+## [4.8.0]
+
+### Added
+
+-   `sendTransaction` in `rpc_method_wrappers` accepts optional param of `TransactionMiddleware` (#7088)
+-   WebEth has `setTransactionMiddleware` and `getTransactionMiddleware` for automatically passing to `sentTransaction` (#7088)
+- `TransactionMiddleware` and `TransactionMiddleware` data types are exported (#7088)
+
+## [4.8.1]
+
+### Fixed
+
+-   Fixed geth issue when running a new instance, transactions will index when there are no blocks created (#7098)
+
+## [Unreleased]
+
+### Fixed
+
+-   Adds transaction property to be an empty list rather than undefined when no transactions are included in the block (#7151)

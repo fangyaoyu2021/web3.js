@@ -213,15 +213,25 @@ Documentation:
 
 ### Fixed
 
-- fixed toHex incorrectly hexing Uint8Arrays and Buffer (#6957)
-- fixed isUint8Array not returning true for Buffer (#6957)
+-   fixed toHex incorrectly hexing Uint8Arrays and Buffer (#6957)
+-   fixed isUint8Array not returning true for Buffer (#6957)
 
-## [Unreleased]
+## [4.3.0]
 
 ### Added
 
-- `toWei` add warning when using large numbers or large decimals that may cause precision loss (#6908)
+-   `toWei` add warning when using large numbers or large decimals that may cause precision loss (#6908)
+-   `toWei` and `fromWei` now supports integers as a unit. (#7053)
 
 ### Fixed
 
-- `toWei` support numbers in scientific notation (#6908)
+-   `toWei` support numbers in scientific notation (#6908)
+-   `toWei` and `fromWei` trims according to ether unit successfuly (#7044)
+
+## [4.3.1]
+
+### Fixed
+
+-   `_sendPendingRequests` will catch unhandled errors from `_sendToSocket` (#6968)
+
+## [Unreleased]
