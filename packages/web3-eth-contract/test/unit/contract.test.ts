@@ -38,11 +38,10 @@ import {
 	GreeterWithOverloadingBytecode,
 } from '../shared_fixtures/build/GreeterWithOverloading';
 import { AllGetPastEventsData, getLogsData, getPastEventsData } from '../fixtures/unitTestFixtures';
-import { getSystemTestProvider } from '../fixtures/system_test_utils';
 import { erc721Abi } from '../fixtures/erc721';
 import { ERC20TokenAbi } from '../shared_fixtures/build/ERC20Token';
 import { processAsync } from '../shared_fixtures/utils';
-import { ContractTransactionMiddleware } from "../fixtures/contract_transaction_middleware";
+import { ContractTransactionMiddleware } from '../fixtures/contract_transaction_middleware';
 
 jest.mock('web3-eth', () => {
 	const allAutoMocked = jest.createMockFromModule('web3-eth');
@@ -150,7 +149,7 @@ describe('Contract', () => {
 		});
 
 		it('should set the provider, from options, upon instantiation', () => {
-			const provider = getSystemTestProvider();
+			const provider = 'http://127.0.0.1:4545';
 			const contract = new Contract([], '', {
 				provider,
 			});
@@ -162,7 +161,7 @@ describe('Contract', () => {
 		});
 
 		it('should set the provider, from context, upon instantiation', () => {
-			const provider = getSystemTestProvider();
+			const provider = 'http://127.0.0.1:4545';
 			const contract = new Contract(
 				[],
 				'',
@@ -286,13 +285,12 @@ describe('Contract', () => {
 		it('should pass middleware to sendTransaction when middleware is there and deploy().send() is called', async () => {
 			const contract = new Contract(GreeterAbi);
 			const middleware = new ContractTransactionMiddleware();
-			contract.setTransactionMiddleware(middleware)
+			contract.setTransactionMiddleware(middleware);
 
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const sendTransactionSpy = jest
 				.spyOn(eth, 'sendTransaction')
 				.mockImplementation((_objInstance, _tx, _dataFormat, _options, _middleware) => {
-					
 					expect(_middleware).toBeDefined();
 					const newContract = contract.clone();
 					newContract.options.address = deployedAddr;
@@ -307,12 +305,11 @@ describe('Contract', () => {
 					arguments: ['My Greeting'],
 				})
 				.send(sendOptions);
-			
+
 			sendTransactionSpy.mockClear();
 		});
 
 		it('should pass middleware to sendTransaction when middleware is there and contract.method.send() is called', async () => {
-
 			const contract = new Contract(GreeterAbi, '0x12264916b10Ae90076dDa6dE756EE1395BB69ec2');
 			const middleware = new ContractTransactionMiddleware();
 			contract.setTransactionMiddleware(middleware);
@@ -320,17 +317,15 @@ describe('Contract', () => {
 			const spyTx = jest
 				.spyOn(eth, 'sendTransaction')
 				.mockImplementation((_objInstance, _tx, _dataformat, _options, _middleware) => {
-
 					expect(_middleware).toBeDefined();
 
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-empty-function
 					return { status: '0x1', on: () => {} } as any;
-
 				});
 
 			const receipt = await contract.methods.setGreeting('Hello').send({
 				from: '0x12364916b10Ae90076dDa6dE756EE1395BB69ec2',
-				gas: '1000000'
+				gas: '1000000',
 			});
 
 			expect(receipt.status).toBe('0x1');
@@ -816,9 +811,9 @@ describe('Contract', () => {
 				'0x00000000219ab540356cBB839Cbe05303d7705Fa',
 				{ gas: '0x97254' },
 			);
+			contract.maxListenersWarningThreshold = 1000;
 
 			const clonnedContract = contract.clone();
-
 			expect(stringify(contract)).toStrictEqual(stringify(clonnedContract));
 
 			contract.options.jsonInterface = GreeterAbi;
@@ -826,6 +821,7 @@ describe('Contract', () => {
 
 		it('should clone new contract', () => {
 			const contract = new Contract(sampleStorageContractABI);
+			contract.maxListenersWarningThreshold = 1000;
 
 			const clonnedContract = contract.clone();
 			expect(stringify(contract)).toStrictEqual(stringify(clonnedContract));
